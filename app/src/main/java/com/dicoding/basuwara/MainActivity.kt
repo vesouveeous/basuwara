@@ -3,44 +3,49 @@ package com.dicoding.basuwara
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.dicoding.basuwara.ui.theme.BasuwaraTheme
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.dicoding.basuwara.ui.Login
+import com.dicoding.basuwara.ui.onboard.Onboarding
+import com.dicoding.basuwara.ui.register.Register
+import com.google.accompanist.pager.ExperimentalPagerApi
 
+@OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalPagerApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         setContent {
-            BasuwaraTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
+            val navController = rememberNavController()
+
+            NavHost(
+                navController = navController,
+                startDestination = "onboarding_page"
+            ) {
+                composable("onboarding_page") {
+                    Onboarding(
+                        navController = navController,
+                        onGettingStartedClick = {
+                            // Handle "Get Started" click
+                        },
+                        onSkipClicked = {
+                            // Handle "Skip" click
+                        }
+                    )
                 }
+                composable("login_page") {
+                    Login(navController = navController)
+                }
+                composable(
+                    "register_page",
+                    content = {
+                        Register(navController = navController)
+                    })
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BasuwaraTheme {
-        Greeting("Android")
     }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.Basuwara.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FFD0BCFF</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.Basuwara.NoActionBar</item>
+    </style>
+
+    <style name="Theme.Basuwara.NoActionBar" parent="Theme.SplashScreen">
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowNoTitle">true</item>
+    </style>
+
+</resources>
