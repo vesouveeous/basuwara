@@ -1,8 +1,8 @@
-package com.dicoding.basuwara.ui.onboard
+package com.dicoding.basuwara.ui.screen.onboard
 
 
 import com.dicoding.basuwara.R
-import com.dicoding.basuwara.ui.onboard.DataOnboard
+import com.dicoding.basuwara.ui.screen.onboard.DataOnboard
 
 val onboard = listOf(
     DataOnboard(

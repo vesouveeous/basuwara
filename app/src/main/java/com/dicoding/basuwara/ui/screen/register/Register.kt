@@ -1,4 +1,4 @@
-package com.dicoding.basuwara.ui.register
+package com.dicoding.basuwara.ui.screen.register
 
 
 import androidx.compose.foundation.Image
@@ -52,7 +52,7 @@ import com.dicoding.basuwara.ui.theme.Visibility
 import com.dicoding.basuwara.ui.theme.VisibilityOff
 
 @Composable
-fun Register(navController: NavController) {
+fun Register(onSignInClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -136,14 +136,8 @@ fun Register(navController: NavController) {
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
-                androidx.compose.material3.TextButton(onClick = {
-                    navController.navigate("login_page"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true
-                    }
-
-                }) {
-                    androidx.compose.material3.Text(
+                androidx.compose.material3.TextButton(onClick = { onSignInClick() }) {
+                    Text(
                         text = "Sign In",
                         letterSpacing = 1.sp,
                         style = MaterialTheme.typography.labelLarge

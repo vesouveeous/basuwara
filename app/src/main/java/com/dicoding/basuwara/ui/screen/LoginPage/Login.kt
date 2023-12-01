@@ -42,7 +42,10 @@ import com.dicoding.basuwara.ui.theme.VisibilityOff
 
 
 @Composable
-fun Login(navController: NavController) {
+fun Login(
+    onCreateAccountClick: () -> Unit,
+    onLoginClick: () -> Unit
+) {
     
     Box(
         modifier = Modifier
@@ -111,32 +114,17 @@ fun Login(navController: NavController) {
                     gradientColors = gradientColor,
                     cornerRadius = cornerRadius,
                     nameButton = "Login",
-                    onClick = {
-                        navController.navigate("homepage") {
-                            launchSingleTop = true
-                        }
-                    }
+                    onClick = { onLoginClick() }
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
-                androidx.compose.material3.TextButton(onClick = {
-
-                    navController.navigate("register_page"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true
-                    }
-
-                }) {
-                    androidx.compose.material3.Text(
+                TextButton(onClick = { onCreateAccountClick() }) {
+                    Text(
                         text = "Create An Account",
                         letterSpacing = 1.sp,
                         style = MaterialTheme.typography.labelLarge
                     )
                 }
-
-
-
-
             }
 
 
@@ -274,10 +262,4 @@ fun SimpleOutlinedPasswordTextField() {
             }
         )
     )
-}
-@Preview
-@Composable
-fun LoginPreview() {
-
-    Login(navController = NavController(LocalContext.current))
 }

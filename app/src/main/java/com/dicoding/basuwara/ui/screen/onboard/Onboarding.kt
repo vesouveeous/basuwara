@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalPagerApi::class, ExperimentalPagerApi::class)
 
-package com.dicoding.basuwara.ui.onboard
+package com.dicoding.basuwara.ui.screen.onboard
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.capstone.basuwara.ui.onboard.PageUI
 import com.dicoding.basuwara.R
-import com.dicoding.basuwara.ui.onboard.onboard
+import com.dicoding.basuwara.ui.screen.onboard.onboard
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -45,7 +45,6 @@ import kotlinx.coroutines.delay
 @ExperimentalPagerApi
 @Composable
 fun Onboarding(
-    navController: NavController,
     onGettingStartedClick: () -> Unit,
     onSkipClicked: () -> Unit
 ) {
@@ -77,10 +76,6 @@ fun Onboarding(
                     .clickable {
                         shouldAutoScroll = false // Memberhentikan perulangan
                         onSkipClicked()
-                        navController.navigate("login_page") {
-                            popUpTo(navController.graph.startDestinationId)
-                            launchSingleTop = true
-                        }
                     }
             )
         }
@@ -112,11 +107,6 @@ fun Onboarding(
                 onClick = {
                     shouldAutoScroll = false // Memberhentikan perulangan
                     onGettingStartedClick()
-                    // Navigasi ke halaman login
-                    navController.navigate("login_page") {
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true
-                    }
                 },
                 colors = ButtonDefaults.outlinedButtonColors(
                     colorResource(id = R.color.purple_500),

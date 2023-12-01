@@ -1,4 +1,4 @@
-package com.dicoding.basuwara.ui.onboard
+package com.dicoding.basuwara.ui.screen.onboard
 
 import androidx.annotation.DrawableRes
 

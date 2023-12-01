@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.dicoding.basuwara.ui.onboard.DataOnboard
+import com.dicoding.basuwara.ui.screen.onboard.DataOnboard
 
 @Composable
 fun PageUI(onboard: DataOnboard) {
