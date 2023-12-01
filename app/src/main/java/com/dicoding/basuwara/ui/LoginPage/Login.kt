@@ -2,6 +2,7 @@ package com.dicoding.basuwara.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -70,7 +73,8 @@ fun Login(navController: NavController) {
 
                 )
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
                 ,
@@ -107,6 +111,11 @@ fun Login(navController: NavController) {
                     gradientColors = gradientColor,
                     cornerRadius = cornerRadius,
                     nameButton = "Login",
+                    onClick = {
+                        navController.navigate("homepage") {
+                            launchSingleTop = true
+                        }
+                    }
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
@@ -145,6 +154,7 @@ private fun GradientButton(
     gradientColors: List<Color>,
     cornerRadius: Dp,
     nameButton: String,
+    onClick: () -> Unit
 ) {
 
     androidx.compose.material3.Button(
@@ -152,7 +162,7 @@ private fun GradientButton(
             .fillMaxWidth()
             .padding(start = 32.dp, end = 32.dp),
         onClick = {
-            //your code
+            onClick()
         },
 
         contentPadding = PaddingValues(),
@@ -168,7 +178,7 @@ private fun GradientButton(
                 .background(
                     brush = Brush.horizontalGradient(colors = gradientColors),
 
-                )
+                    )
 
                 /*.background(
                     brush = Brush.linearGradient(colors = gradientColors),
@@ -264,4 +274,10 @@ fun SimpleOutlinedPasswordTextField() {
             }
         )
     )
+}
+@Preview
+@Composable
+fun LoginPreview() {
+
+    Login(navController = NavController(LocalContext.current))
 }

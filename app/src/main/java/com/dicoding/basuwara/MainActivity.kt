@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.dicoding.basuwara.ui.Login
 import com.dicoding.basuwara.ui.onboard.Onboarding
 import com.dicoding.basuwara.ui.register.Register
+import com.dicoding.basuwara.ui.screen.home.HomeScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -44,7 +45,11 @@ class MainActivity : ComponentActivity() {
                     "register_page",
                     content = {
                         Register(navController = navController)
-                    })
+                    }
+                )
+                composable("homepage"){
+                    HomeScreen()
+                }
             }
         }
     }
