@@ -1,5 +1,4 @@
 package com.dicoding.basuwara.ui.screen.home
-
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.util.Log
 import androidx.annotation.DrawableRes
