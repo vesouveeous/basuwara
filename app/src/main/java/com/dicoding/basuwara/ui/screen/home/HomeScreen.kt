@@ -1,10 +1,10 @@
 package com.dicoding.basuwara.ui.screen.home
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
@@ -19,11 +19,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,25 +39,59 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
-import com.dicoding.basuwara.R
 import com.dicoding.basuwara.R.*
 import com.dicoding.basuwara.ui.components.AnimatedCircularProgressIndicator
 
 @Composable
 fun HomeScreen(
+    viewModel: HomeViewModel = hiltViewModel(),
+    dummyClick: () -> Unit,
+    goToOnboardingPage: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column {
-        HomeTopBar()
-        HomeBody()
+    LaunchedEffect(viewModel.idState) {
+        viewModel.getUserId()
+
+        viewModel.idState.collect {id ->
+            Log.d("HomeScreen", "User ID: $id")
+            if (id == "empty") {
+                Log.d("HomeScreen", "Redirecting to Onboarding Page")
+                goToOnboardingPage()
+            } else if (id.isNotEmpty()) {
+            viewModel.getUserInfo(id)
+            }
+        }
+    }
+
+    viewModel.homeState.collectAsState(initial = null).value.let {
+        when(it) {
+            HomeState(isLoading = true) -> {
+                CircularProgressIndicator()
+            }
+            HomeState(isLoading = false, isSuccess = it?.isSuccess) -> {
+                Column {
+                    HomeTopBar(
+                        name = it.isSuccess!!.name,
+                        onNotificationClick = {
+                            viewModel.logout()
+                            dummyClick()
+                        }
+                    )
+                    HomeBody()
+                }
+            }
+        }
     }
 }
 
 @Composable
 fun HomeTopBar(
+    name: String,
+    onNotificationClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val imageUrl = "https://example.com/image.jpg"
@@ -75,11 +113,11 @@ fun HomeTopBar(
                 .padding(top = 32.dp, end = 24.dp)
                 .size(35.dp)
                 .align(Alignment.TopEnd)
-                .clickable {  }
+                .clickable { onNotificationClick() }
         )
         Column {
             Image(
-                painter = painter,
+                painter = if (painter.state is AsyncImagePainter.State.Success) painter else painterResource(id = drawable.ic_placeholder),
                 contentDescription = "Profile picture",
                 modifier = Modifier
                     .clip(CircleShape)
@@ -90,13 +128,15 @@ fun HomeTopBar(
                 .fillMaxWidth()
                 .height(8.dp))
             Text(
-                text = "Hello, xxxxx!",
+                text = "Hello, $name!",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = modifier.padding(start = 16.dp)
             )
             Text(
                 text = "What would you want to learn today?",
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = modifier.padding(start = 16.dp, bottom = 16.dp)
             )
         }
@@ -264,6 +304,7 @@ fun CourseCard(
 @Composable
 fun HomeScreenPreview() {
     MaterialTheme {
-        HomeScreen()
+        HomeScreen(dummyClick = {  },
+            goToOnboardingPage = {  })
     }
 }

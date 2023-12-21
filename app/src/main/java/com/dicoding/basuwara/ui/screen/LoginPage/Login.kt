@@ -1,5 +1,6 @@
 package com.dicoding.basuwara.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,8 +14,11 @@ import androidx.compose.material.*
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -35,18 +39,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.dicoding.basuwara.R
+import com.dicoding.basuwara.ui.screen.LoginPage.LoginViewModel
 import com.dicoding.basuwara.ui.theme.Visibility
 import com.dicoding.basuwara.ui.theme.VisibilityOff
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @Composable
 fun Login(
+    viewModel: LoginViewModel = hiltViewModel(),
     onCreateAccountClick: () -> Unit,
     onLoginClick: () -> Unit
 ) {
-    
+    var email by rememberSaveable { mutableStateOf("renaldy@gmail.com") }
+    var password by rememberSaveable { mutableStateOf("asdasd123") }
+    val context = LocalContext.current
+
+    val scope = rememberCoroutineScope()
+    val state = viewModel.loginState.collectAsState(initial = null)
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -99,10 +118,14 @@ fun Login(
                     color = MaterialTheme.colorScheme.primary,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                SimpleOutlinedTextFieldSample()
+                SimpleOutlinedTextFieldSample(email){
+                    email = it
+                }
 
                 Spacer(modifier = Modifier.padding(3.dp))
-                SimpleOutlinedPasswordTextField()
+                SimpleOutlinedPasswordTextField(password) {
+                    password = it
+                }
 
                 val gradientColor = listOf(Color(0xFF484BF1), Color(0xFF673AB7))
                 val cornerRadius = 16.dp
@@ -114,7 +137,11 @@ fun Login(
                     gradientColors = gradientColor,
                     cornerRadius = cornerRadius,
                     nameButton = "Login",
-                    onClick = { onLoginClick() }
+                    onClick = {
+                        scope.launch {
+                            viewModel.loginUser(email, password)
+                        }
+                    }
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
@@ -125,9 +152,33 @@ fun Login(
                         style = MaterialTheme.typography.labelLarge
                     )
                 }
+                
+                LaunchedEffect(key1 = state.value?.isSuccess) {
+                    if (!state.value?.isSuccess.isNullOrEmpty()) {
+                        viewModel.saveSession(state.value?.isSuccess!!)
+                        withContext(Dispatchers.Default) {
+                            delay(1000)
+
+                            withContext(Dispatchers.Main) {
+                                onLoginClick()
+                            }
+                        }
+                    }
+                }
+                LaunchedEffect(key1 = state.value?.isError) {
+                    if (!state.value?.isError.isNullOrEmpty()){
+                        Toast.makeText(context, state.value?.isError, Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
 
-
+            if (state.value?.isLoading == true) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(70.dp)
+                )
+            }
         }
 
     }
@@ -188,13 +239,15 @@ private fun GradientButton(
 //email id
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SimpleOutlinedTextFieldSample() {
+fun SimpleOutlinedTextFieldSample(
+    text: String,
+    onChange: (String) -> Unit
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    var text by rememberSaveable { mutableStateOf("") }
 
     OutlinedTextField(
         value = text,
-        onValueChange = { text = it },
+        onValueChange = { onChange(it) },
         label = {
             Text("Name or Email Address",
                 color = MaterialTheme.colorScheme.primary,
@@ -223,13 +276,15 @@ fun SimpleOutlinedTextFieldSample() {
 //password
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SimpleOutlinedPasswordTextField() {
+fun SimpleOutlinedPasswordTextField(
+    password: String,
+    onChange: (String) -> Unit
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    var password by rememberSaveable { mutableStateOf("") }
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
     OutlinedTextField(
         value = password,
-        onValueChange = { password = it },
+        onValueChange = { onChange(it) },
         label = {
             Text("Enter Password",
                 color = MaterialTheme.colorScheme.primary,

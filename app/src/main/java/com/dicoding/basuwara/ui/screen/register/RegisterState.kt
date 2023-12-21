@@ -1,4 +1,7 @@
 package com.dicoding.basuwara.ui.screen.register
 
-class RegisterState {
-}
+data class RegisterState(
+    val isLoading: Boolean = false,
+    val isSuccess: Boolean? = false,
+    val isError: String? = ""
+)

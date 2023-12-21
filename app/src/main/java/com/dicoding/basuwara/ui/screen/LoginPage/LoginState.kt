@@ -1,4 +1,7 @@
 package com.dicoding.basuwara.ui.screen.LoginPage
 
-class LoginState {
-}
+data class LoginState(
+    val isLoading: Boolean = false,
+    val isSuccess: String? = null,
+    val isError: String? = ""
+)

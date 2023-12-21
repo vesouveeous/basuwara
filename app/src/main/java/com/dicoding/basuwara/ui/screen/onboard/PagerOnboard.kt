@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,11 +31,18 @@ fun PageUI(onboard: DataOnboard) {
 
         Text(
             text = onboard.title,
-            fontSize = 28.sp, fontWeight = FontWeight.Bold
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(16.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = onboard.description,
-            textAlign = TextAlign.Center,fontSize = 14.sp)
+        Text(
+            text = onboard.description,
+            textAlign = TextAlign.Center,
+            fontSize = 14.sp,
+            modifier = Modifier.padding(16.dp)
+        )
         Spacer(modifier = Modifier.height(12.dp))
 
     }

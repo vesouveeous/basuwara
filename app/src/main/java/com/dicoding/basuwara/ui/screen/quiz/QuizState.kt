@@ -1,4 +1,7 @@
 package com.dicoding.basuwara.ui.screen.quiz
 
-class QuizState {
-}
+data class QuizState (
+    val isLoading: Boolean = false,
+    val isSuccess: String? = null,
+    val isError: String? = ""
+)

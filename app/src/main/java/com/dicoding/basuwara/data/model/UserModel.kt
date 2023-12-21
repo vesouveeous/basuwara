@@ -1,4 +1,9 @@
 package com.dicoding.basuwara.data.model
 
-class UserModel {
-}
+data class UserModel(
+    val id: String? = null,
+    val name: String,
+    val email: String,
+    val password: String,
+    val phone: String
+)

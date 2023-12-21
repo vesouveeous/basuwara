@@ -1,4 +1,7 @@
 package com.dicoding.basuwara.data.model
 
-enum class QuizModel {
-}
+data class QuizModel(
+    val question: String,
+    val options: Map<Char, String>,
+    val correctAnswer: Char,
+)

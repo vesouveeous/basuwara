@@ -1,6 +1,7 @@
 package com.dicoding.basuwara.ui.screen.register
 
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,6 +28,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -46,13 +51,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dicoding.basuwara.R
+import com.dicoding.basuwara.data.model.UserModel
 import com.dicoding.basuwara.ui.theme.Visibility
 import com.dicoding.basuwara.ui.theme.VisibilityOff
 
 @Composable
-fun Register(onSignInClick: () -> Unit) {
+fun Register(
+    viewModel: RegisterViewModel = hiltViewModel(),
+    onSignInClick: () -> Unit,
+) {
+    var name by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var phone by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var confirmPassword by rememberSaveable { mutableStateOf("") }
+
+    val localContext = LocalContext.current
+    var state = viewModel.registerState.collectAsState(initial = null)
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -61,8 +79,6 @@ fun Register(onSignInClick: () -> Unit) {
                 color = Color.Transparent,
             )
     ) {
-
-
         Box(
             modifier = Modifier
                 .align(Alignment.Center),
@@ -78,7 +94,8 @@ fun Register(onSignInClick: () -> Unit) {
 
                 )
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
                 ,
@@ -100,19 +117,29 @@ fun Register(onSignInClick: () -> Unit) {
                     color = colorScheme.primary,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                RegisterName()
+                RegisterName(name) {
+                    name = it
+                }
 
                 Spacer(modifier = Modifier.padding(3.dp))
-                RegisterPhone()
+                RegisterPhone(phone) {
+                    phone = it
+                }
 
                 Spacer(modifier = Modifier.padding(3.dp))
-                RegisterEmail()
+                RegisterEmail(email) {
+                    email = it
+                }
 
                 Spacer(modifier = Modifier.padding(3.dp))
-                RegisterPassword()
+                RegisterPassword(password) {
+                    password = it
+                }
 
                 Spacer(modifier = Modifier.padding(3.dp))
-                RegisterPasswordConfirm()
+                RegisterPasswordConfirm(confirmPassword) {
+                    confirmPassword = it
+                }
 
 
                 val gradientColor = listOf(Color(0xFF484BF1), Color(0xFF673AB7))
@@ -132,7 +159,15 @@ fun Register(onSignInClick: () -> Unit) {
                     gradientColors = gradientColor,
                     cornerRadius = cornerRadius,
                     nameButton = "Sign Up",
-
+                    onClick = {
+                        val user = UserModel(
+                            name = name,
+                            email = email,
+                            password = password,
+                            phone = phone
+                        )
+                        viewModel.registerUser(user)
+                    }
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
@@ -144,14 +179,26 @@ fun Register(onSignInClick: () -> Unit) {
                     )
                 }
 
-
-
+                LaunchedEffect(key1 = state.value?.isError) {
+                    if (!state.value?.isError.isNullOrEmpty()){
+                        Toast.makeText(localContext, state.value?.isError, Toast.LENGTH_LONG).show()
+                    }
+                }
+                LaunchedEffect(key1 = state.value?.isSuccess) {
+                    if (state.value?.isSuccess == true) {
+                        Toast.makeText(localContext, "Account successfully registered!", Toast.LENGTH_SHORT).show()
+                        onSignInClick()
+                    }
+                }
 
             }
 
-
         }
-
+        if (state.value?.isLoading == true) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
     }
 
 
@@ -164,7 +211,7 @@ private fun Button(
     gradientColors: List<Color>,
     cornerRadius: Dp,
     nameButton: String,
-
+    onClick: () -> Unit
 ) {
 
     androidx.compose.material3.Button(
@@ -172,7 +219,7 @@ private fun Button(
             .fillMaxWidth()
             .padding(start = 32.dp, end = 32.dp),
         onClick = {
-            //your code
+            onClick()
         },
 
         contentPadding = PaddingValues(),
@@ -188,7 +235,7 @@ private fun Button(
                 .background(
                     brush = Brush.horizontalGradient(colors = gradientColors),
 
-                )
+                    )
 
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             contentAlignment = Alignment.Center
@@ -206,13 +253,15 @@ private fun Button(
 //name
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterName() {
+fun RegisterName(
+    name: String,
+    onChange: (String) -> Unit
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    var text by rememberSaveable { mutableStateOf("") }
 
     OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
+        value = name,
+        onValueChange = { onChange(it) },
         label = {
             Text("Name",
                 color = colorScheme.primary,
@@ -242,13 +291,15 @@ fun RegisterName() {
 //phone
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterPhone() {
+fun RegisterPhone(
+    phone: String,
+    onChange: (String) -> Unit
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    var text by rememberSaveable { mutableStateOf("") }
 
     OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
+        value = phone,
+        onValueChange = { onChange(it) },
         label = {
             Text("Phone",
                 color = colorScheme.primary,
@@ -278,13 +329,15 @@ fun RegisterPhone() {
 //email id
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterEmail() {
+fun RegisterEmail(
+    email: String,
+    onChange: (String) -> Unit
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    var text by rememberSaveable { mutableStateOf("") }
 
     OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
+        value = email,
+        onValueChange = { onChange(it) },
         label = {
             Text("Email Address",
                 color = colorScheme.primary,
@@ -313,13 +366,15 @@ fun RegisterEmail() {
 //password
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterPassword() {
+fun RegisterPassword(
+    password: String,
+    onChange: (String) -> Unit
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    var password by rememberSaveable { mutableStateOf("") }
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
     OutlinedTextField(
         value = password,
-        onValueChange = { password = it },
+        onValueChange = { onChange(it) },
         label = {
             Text("Enter Password",
                 color = colorScheme.primary,
@@ -357,13 +412,15 @@ fun RegisterPassword() {
 //password confirm
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterPasswordConfirm() {
+fun RegisterPasswordConfirm(
+    confirmPassword: String,
+    onChange: (String) -> Unit
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    var password by rememberSaveable { mutableStateOf("") }
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
     OutlinedTextField(
-        value = password,
-        onValueChange = { password = it },
+        value = confirmPassword,
+        onValueChange = { onChange(it) },
         label = {
             Text("Confirm Password",
                 color = colorScheme.primary,

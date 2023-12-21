@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "616338032484",
+    "firebase_url": "https://basuwara-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "basuwara",
     "storage_bucket": "basuwara.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.dicoding.basuwara"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "616338032484-6ms59j7upadiofdso04f7fnubt1gmuq4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dicoding.basuwara",
+            "certificate_hash": "da0f91fb9c3658e2f91daafbee3ffedeb92d5898"
+          }
+        },
+        {
+          "client_id": "616338032484-80jiv5knpm9bujb3iingjoishp1ovj3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDKntYl_Z0Eveg-JoZ0V2Vo6Qj_mXr5BtU"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616338032484-80jiv5knpm9bujb3iingjoishp1ovj3n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
