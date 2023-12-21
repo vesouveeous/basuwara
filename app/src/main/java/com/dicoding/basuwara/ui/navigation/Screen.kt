@@ -14,4 +14,6 @@ sealed class Screen(val route: String) {
         fun createRoute(result: Int) = "quiz_result/$result"
     }
     object Profile: Screen("profile_page")
+
+    object Camera: Screen("camera")
 }

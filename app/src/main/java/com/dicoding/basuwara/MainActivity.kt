@@ -7,9 +7,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Gamepad
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Quiz
@@ -45,6 +47,7 @@ import com.dicoding.basuwara.ui.navigation.Screen
 import com.dicoding.basuwara.ui.screen.onboard.Onboarding
 import com.dicoding.basuwara.ui.screen.register.Register
 import com.dicoding.basuwara.ui.screen.home.HomeScreen
+import com.dicoding.basuwara.ui.screen.image.CameraContent
 import com.dicoding.basuwara.ui.screen.quiz.ChooseQuizScreen
 import com.dicoding.basuwara.ui.screen.quiz.QuizResultScreen
 import com.dicoding.basuwara.ui.screen.quiz.QuizScreen
@@ -73,7 +76,10 @@ class MainActivity : ComponentActivity() {
                     val currentRoute = navBackstackEntry?.destination?.route
                     Scaffold(
                         topBar = { if (isShowTopBar) TopBar(title = getTopBarTitle(currentRoute!!)) },
-                        bottomBar = { if (isShowBottomBar) BottomBar(navController = navController) }
+                        bottomBar = { if (isShowBottomBar) BottomBar(navController = navController) },
+                        floatingActionButton = {
+                            if (currentRoute == Screen.Homepage.route) MyFab(navController = navController)
+                        }
                     ) { innerPadding ->
                         NavHost(
                             navController = navController,
@@ -200,6 +206,11 @@ class MainActivity : ComponentActivity() {
                                     }
                                 )
                             }
+                            composable(Screen.Camera.route) {
+                                isShowTopBar = false
+                                isShowBottomBar = false
+                                CameraContent()
+                            }
                         }
                     }
                 }
@@ -208,7 +219,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
     title: String
@@ -272,6 +282,19 @@ fun BottomBar(
                 }
             )
         }
+    }
+}
+
+@Composable
+fun MyFab(
+    navController: NavHostController
+) {
+    FloatingActionButton(onClick = {
+        navController.navigate(Screen.Camera.route) {
+            launchSingleTop = true
+        }
+    }) {
+        Icon(imageVector = Icons.Default.CameraAlt, contentDescription = "camera")
     }
 }
 

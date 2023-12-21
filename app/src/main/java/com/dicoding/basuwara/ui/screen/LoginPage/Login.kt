@@ -60,8 +60,8 @@ fun Login(
     onCreateAccountClick: () -> Unit,
     onLoginClick: () -> Unit
 ) {
-    var email by rememberSaveable { mutableStateOf("renaldy@gmail.com") }
-    var password by rememberSaveable { mutableStateOf("asdasd123") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
