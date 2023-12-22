@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "basuwara-backup",
+  "private_key_id": "154ff9b5c33a68dca352cc3c30f65f7ba859c29e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDcO0eFOKQbQFPZ\nHMeAQ0iG2EktuAHZYOdDHBTEFGDlFaMSOj2QO5O9jHkKCbCbRI/3fEoFgITxJhVx\nRxSnwzLLRGVQMyf+WUcmaP8GSxYvlJ8SOhpf1LfHGu6aPLPpC+3fc26Qwu8cvXIM\nQd3ODJirGXOtRU34bw2YCNCsZhj5ri/HkvINIo6Av4xh+qsvvxh1Rcx//0efPXMf\n2PoKFDQ/ASqzNvbfrhuid8J/aG7rqgUXe+4DMvzgrXvdjDzYBTNuUkxBQIwOBuol\nFHZggy3f1xGisRoDTMKb0Q/x7jB7Xjc9lrx1l/La4jIWnAyUd5QxJ+W2RJ13U76W\nWJ1BQCblAgMBAAECggEAFJpLF5Bz8cSz02TY2QvyVgMX3XoQWjixidqvqqRJaET8\n63CdX8fjC2F/1UuQxQXF/h4XgqpCRZkNenpu2T7umot8euM+Q5IwkMxTx0/w9GSP\n+RGMdBifVLYVSkKRhiTCjRvsZQiHfAXRDIqA6IzPH3qTEsuf/rTM7cMtWmN2xKy1\ndhETJF3GZqlB9K9bFSI2QaX3jQ9f0cPpVBH2Q45k93L5xlbS+0/5B6tssFPNfBk8\n2yn4tJTcf0d9TsauIG+LJ0PXkoTVkmC6qV8gvzf8NEWqmv4hGj3xvhsWwEMfHASz\nGiFGnGE78xIC4LVxb0Mk4wNTZtDI9XqZ8GG8UvZDZQKBgQD7UdPjM/gFgSu64bjz\nw/DlzuwrAutdpWfhgRWkF9dB9LjZTlUCSYLu6zxScunBcGoUFrffSlcOIkVb8/0Y\nZPGVy1vaFgePfts4J5UcLZ65Uj9ZbLh0R6kxqVpTkM1WlWZltYwPuGO7D0pU8o3M\nG2EmWtwe4qTwX0OTyRK3cUbwCwKBgQDgVT0Q4DnpJFYJdIKyboyK7P2CzCo3V5Xj\ndfTNLUs/IDzTcqMEZ/KfxAgwd139x8xdjJxP65wLTF/VKObqXQsyyyGV8BSdOUSf\nEizMN581MzLNhSZdezWAKNX8KpoCOlI2iz210HWiYhR2hMnklR9xIRIDHXBV21P1\nu1+sPq7qzwKBgQDH5DehuM4GoszDYZGX4TsTrddOBo5p94t+Ywtxbrz5asoznQgk\nP4/ytAtQkLG398+HluI8qYZAaaW9E301D+TO/eZaubbdvUpjiaght29Ne0uDtuOn\nKPA73bVITh3kRgQh1ZpHTqOUPv8iPaHmu8gzl4UI07/YqAy52O4YFfMULQKBgA5n\narRasV026A9TW9D5KC0DaoOreEp1ZTplqIJEFkDHYSByi+UMh5eajqwN/gr9eTHI\nhYDcL/jJvp2BMtJ5hu6L/GwULj6qHq3YDOhP6fkQgIKRuhTmhFjmRlcapSjfdcfq\nyNuTtvnmMkop3IzAxnQNG4r3qO7aVlnA3jPBEpohAoGAdZXqABaOWYJTWTJ8ccAh\n1RfzbfH7XGErkHg0Ntm5sINGbw9ntk/u1zYSG+V14uPnUe2oV4RWlw62ZAJD8OGb\n+JrHzI+PIPJCTC1RhbYmbQ/GXXiWACTkTl20V4YNIu89uVMNskXB83nupxZLWKo4\nZNUApnmqKgRtHi1LsMx5cZw=\n-----END PRIVATE KEY-----\n",
+  "client_email": "basuwara-service-account@basuwara-backup.iam.gserviceaccount.com",
+  "client_id": "116597511155457001185",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/basuwara-service-account%40basuwara-backup.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
