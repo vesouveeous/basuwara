@@ -50,6 +50,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     dummyClick: () -> Unit,
     goToOnboardingPage: () -> Unit,
+    onCourseChosen: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(viewModel.idState) {
@@ -80,7 +81,7 @@ fun HomeScreen(
                             dummyClick()
                         }
                     )
-                    HomeBody()
+                    HomeBody( onCourseChosen = { onCourseChosen(it) })
                 }
             }
         }
@@ -146,6 +147,7 @@ fun HomeTopBar(
 
 @Composable
 fun HomeBody(
+    onCourseChosen: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -169,7 +171,7 @@ fun HomeBody(
                 progressBackgroundColor = Color.LightGray,
                 progressIndicatorColor = Color.Gray,
                 completedColor = Color.Green,
-                onClick = {  }
+                onClick = { onCourseChosen("jawa") }
             )
             ProgressCard(
                 title = "Belajar Aksara Sunda",
@@ -178,7 +180,7 @@ fun HomeBody(
                 progressBackgroundColor = Color.LightGray,
                 progressIndicatorColor = Color.Gray,
                 completedColor = Color.Green,
-                onClick = {  }
+                onClick = { onCourseChosen("sunda") }
             )
             ProgressCard(
                 title = "Belajar Aksara Bali",
@@ -187,7 +189,7 @@ fun HomeBody(
                 progressBackgroundColor = Color.LightGray,
                 progressIndicatorColor = Color.Gray,
                 completedColor = Color.Green,
-                onClick = {  }
+                onClick = { onCourseChosen("bali") }
             )
         }
         Text(
@@ -204,17 +206,17 @@ fun HomeBody(
             CourseCard(
                 title = "Belajar Aksara Jawa",
                 id = drawable.aksara_jawa,
-                onClick = {  }
+                onClick = { onCourseChosen("jawa") }
             )
             CourseCard(
                 title = "Belajar Aksara Sunda",
                 id = drawable.aksara_sunda,
-                onClick = {  }
+                onClick = { onCourseChosen("sunda") }
             )
             CourseCard(
                 title = "Belajar Aksara Bali",
                 id = drawable.aksara_bali,
-                onClick = {  }
+                onClick = { onCourseChosen("bali") }
             )
         }
     }
@@ -233,10 +235,10 @@ fun ProgressCard(
 ) {
     Card(
         modifier = modifier
-            .clickable { onClick() }
             .padding(8.dp)
             .height(180.dp)
             .width(100.dp)
+            .clickable { onClick() }
     ) {
         AnimatedCircularProgressIndicator(
             currentValue = currentValue,
@@ -296,14 +298,5 @@ fun CourseCard(
                     .fillMaxSize()
             )
         }
-    }
-}
-
-@Preview(showBackground = true, device = Devices.DEFAULT, uiMode = UI_MODE_NIGHT_NO)
-@Composable
-fun HomeScreenPreview() {
-    MaterialTheme {
-        HomeScreen(dummyClick = {  },
-            goToOnboardingPage = {  })
     }
 }

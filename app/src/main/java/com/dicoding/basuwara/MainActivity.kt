@@ -48,9 +48,11 @@ import com.dicoding.basuwara.ui.screen.onboard.Onboarding
 import com.dicoding.basuwara.ui.screen.register.Register
 import com.dicoding.basuwara.ui.screen.home.HomeScreen
 import com.dicoding.basuwara.ui.screen.image.CameraContent
+import com.dicoding.basuwara.ui.screen.profile.ProfileScreen
 import com.dicoding.basuwara.ui.screen.quiz.ChooseQuizScreen
 import com.dicoding.basuwara.ui.screen.quiz.QuizResultScreen
 import com.dicoding.basuwara.ui.screen.quiz.QuizScreen
+import com.dicoding.basuwara.ui.screen.study.StudyScreen
 import com.dicoding.basuwara.ui.theme.Material3ComposeTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
@@ -152,7 +154,13 @@ class MainActivity : ComponentActivity() {
                                             }
                                             launchSingleTop = true
                                         }
-                                    })
+                                    },
+                                    onCourseChosen = {
+                                        navController.navigate(Screen.Study.createRoute(it)) {
+                                            launchSingleTop = true
+                                        }
+                                    }
+                                )
                             }
                             composable(Screen.ChooseQuiz.route) {
                                 isShowTopBar = true
@@ -180,15 +188,7 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.Profile.route){
                                 isShowTopBar = false
                                 isShowBottomBar = true
-                                HomeScreen(dummyClick = {
-                                    navController.navigate(Screen.Login.route) {
-                                        popUpTo(navController.graph.startDestinationId)
-                                        launchSingleTop = true
-                                    }
-                                },
-                                    goToOnboardingPage = {
-                                        navController.navigate(Screen.Onboarding.route)
-                                    })
+                                ProfileScreen()
                             }
                             composable(
                                 route = Screen.QuizResult.route,
@@ -210,6 +210,16 @@ class MainActivity : ComponentActivity() {
                                 isShowTopBar = false
                                 isShowBottomBar = false
                                 CameraContent()
+                            }
+                            composable(
+                                route = Screen.Study.route,
+                                arguments = listOf(navArgument("course_type") { type = NavType.StringType})
+                            ) {
+                                isShowTopBar = true
+                                isShowBottomBar = false
+                                StudyScreen(
+                                    courseType = it.arguments?.getString("course_type") ?: ""
+                                )
                             }
                         }
                     }

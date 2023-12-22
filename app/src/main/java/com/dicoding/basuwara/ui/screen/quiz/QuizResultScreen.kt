@@ -1,5 +1,6 @@
 package com.dicoding.basuwara.ui.screen.quiz
 
+import android.os.Build.VERSION.SDK_INT
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -20,12 +21,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.AsyncImagePainter
 import coil.compose.ImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.decode.ImageDecoderDecoder
+import coil.request.ImageRequest
+import coil.size.Size
 import com.dicoding.basuwara.R
 
 @Composable
@@ -33,6 +40,12 @@ fun QuizResultScreen(
     score: Int,
     onDoneClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    val imageLoader = ImageLoader.Builder(context)
+        .components {
+            add(ImageDecoderDecoder.Factory())
+        }.build()
+    
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -50,6 +63,7 @@ fun QuizResultScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+                Image(painter = painterResource(id = getImage(score)), contentDescription = "fail image")
                 Text(
                     text = "Your final score is\n$score / 100",
                     textAlign = TextAlign.Center,
@@ -99,8 +113,8 @@ fun getScoreMessage(score: Int): String {
 @DrawableRes
 fun getImage(score: Int): Int {
     return when {
-        score >= 70 -> R.drawable.ic_launcher_background
-        score in 41..69 -> R.drawable.ic_launcher_background
+        score >= 70 -> R.drawable.excellent_quiz
+        score in 41..69 -> R.drawable.good_quiz
         else -> R.drawable.anxiety
     }
 }
