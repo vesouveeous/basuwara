@@ -11,7 +11,7 @@ pip install fastapi
 pip install uvicorn
 pip install --upgrade google-cloud-storage 
 ```
-### if install error use this
+### If Install Error Use This
 ```sh
 python -m pip install fastapi
 python -m pip install uvicorn
