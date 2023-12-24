@@ -18,6 +18,7 @@
 </div>
 
 <br />
+[![Machine Learning Workflow][workflow]](https://github.com/vesouveeous/basuwara/blob/main/Machine%20Learning/images/workflow.png)
 ![Machine Learning Workflow](https://github.com/vesouveeous/basuwara/blob/main/Machine%20Learning/images/workflow.png)
 <br />
 <p align="justify">
@@ -33,4 +34,4 @@ The machine learning workflow begins with collecting and combining the Sundanese
 [keras-url]: https://keras.io/
 [opencv]: https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white
 [opencv-url]: https://opencv.org/
-
+[workflow]: images/workflow.png
