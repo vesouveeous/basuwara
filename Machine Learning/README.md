@@ -18,7 +18,7 @@
 </div>
 
 <br />
-<img src="images/workflow.png" alt="Machine Learning Workflow">
+<img src="images/workflow.png" alt="Machine Learning Workflow" width="100%" height="100%">
 [![Machine Learning Workflow][workflow]](https://github.com/vesouveeous/basuwara/blob/main/Machine%20Learning/images/workflow.png)
 ![Machine Learning Workflow](https://github.com/vesouveeous/basuwara/blob/main/Machine%20Learning/images/workflow.png)
 <br />
