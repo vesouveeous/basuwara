@@ -19,8 +19,6 @@
 
 <br />
 <img src="images/workflow.png" alt="Machine Learning Workflow" width="100%" height="100%">
-[![Machine Learning Workflow][workflow]](https://github.com/vesouveeous/basuwara/blob/main/Machine%20Learning/images/workflow.png)
-![Machine Learning Workflow](https://github.com/vesouveeous/basuwara/blob/main/Machine%20Learning/images/workflow.png)
 <br />
 <p align="justify">
 The machine learning workflow begins with collecting and combining the Sundanese, Javanese, and Balinese script dataset. Then, the data is split into training, validation, and testing sets. Afterwards, data augmentation is performed. The model itself is a Convolutional Neural Network (CNN) model, consisting of a few convolution layers, a flatten layer, and some dense layer in the end. The trained model is saved in a .h5 format, where Flask API is used to deploy it.
@@ -35,4 +33,3 @@ The machine learning workflow begins with collecting and combining the Sundanese
 [keras-url]: https://keras.io/
 [opencv]: https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white
 [opencv-url]: https://opencv.org/
-[workflow]: images/workflow.png
