@@ -6,24 +6,25 @@
 <br />
 <div align="center">
   <a href="https://github.com/vesouveeous/basuwara">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Basuwara" width="70" height="70">
   </a>
 
 <h3 align="center">Machine Learning Center</h3>
 
+</div>
+
 <!-- ABOUT THE PROJECT -->
-## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Tensorflow][tensorflow]][tensorflow-url] 
+[![Keras][keras]][keras-url] 
+[![OpenCV][opencv]][opencv-url] 
 
-
-### Built With
-
-* [![Tensorflow][tensorflow]][tensorflow-url]
-* [![Keras][keras]][keras-url]
-* [![OpenCV][opencv]][opencv-url]
-* [![Numpy][numpy]][numpy-url]
-* [![Matplotlib][matplotlib]][matplotlib-url]
+<br />
+![Machine Learning Workflow]()
+<br />
+<p align="justify">
+The machine learning workflow begins with collecting and combining the Sundanese, Javanese, and Balinese script dataset. Then, the data is split into training, validation, and testing sets. Afterwards, data augmentation is performed. The model itself is a Convolutional Neural Network (CNN) model, consisting of a few convolution layers, a flatten layer, and some dense layer in the end. The trained model is saved in a .h5 format, where Flask API is used to deploy it.
+</p>
 
 [contributors-shield]: https://img.shields.io/github/contributors/baksara-id/machine-learning.svg?style=for-the-badge
 [contributors-url]: https://github.com/baksara-id/machine-learning/graphs/contributors
@@ -34,8 +35,4 @@
 [keras-url]: https://keras.io/
 [opencv]: https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white
 [opencv-url]: https://opencv.org/
-[numpy]: https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white
-[numpy-url]: https://numpy.org/
-[matplotlib]: https://img.shields.io/badge/Matplotlib-%23dddfff.svg?style=for-the-badge&logo=Matplotlib&logoColor=black
-[matplotlib-url]: https://matplotlib.org/
 
