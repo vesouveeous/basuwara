@@ -308,6 +308,7 @@ private fun getTopBarTitle(route: String): String {
     return when(route) {
         Screen.ChooseQuiz.route -> "Choose Quiz"
         Screen.Quiz.route -> "Quiz"
+        Screen.Study.route -> "Study"
         else -> ""
     }
 }

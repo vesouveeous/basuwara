@@ -26,13 +26,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.compose.AsyncImagePainter
-import coil.compose.ImagePainter
-import coil.compose.rememberAsyncImagePainter
-import coil.decode.ImageDecoderDecoder
-import coil.request.ImageRequest
-import coil.size.Size
 import com.dicoding.basuwara.R
 
 @Composable
@@ -40,12 +33,6 @@ fun QuizResultScreen(
     score: Int,
     onDoneClick: () -> Unit
 ) {
-    val context = LocalContext.current
-    val imageLoader = ImageLoader.Builder(context)
-        .components {
-            add(ImageDecoderDecoder.Factory())
-        }.build()
-    
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -63,7 +50,7 @@ fun QuizResultScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Image(painter = painterResource(id = getImage(score)), contentDescription = "fail image")
+                Image(painter = painterResource(id = getImage(score)), contentDescription = "result image")
                 Text(
                     text = "Your final score is\n$score / 100",
                     textAlign = TextAlign.Center,
@@ -115,6 +102,6 @@ fun getImage(score: Int): Int {
     return when {
         score >= 70 -> R.drawable.excellent_quiz
         score in 41..69 -> R.drawable.good_quiz
-        else -> R.drawable.anxiety
+        else -> R.drawable.fail_quiz
     }
 }

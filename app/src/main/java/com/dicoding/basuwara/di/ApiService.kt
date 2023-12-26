@@ -9,14 +9,13 @@ import retrofit2.http.Part
 
 interface ApiService {
     @Multipart
-    @POST("upload")
+    @POST("prediction")
     suspend fun uploadImage(
         @Part image: MultipartBody.Part,
-        @Part("description") description: RequestBody
-    ): Response<UploadResponse> // Gantilah YourResponseModel dengan model respon yang sesuai
+    ): Response<UploadResponse>
 
     data class UploadResponse(
-        val status: Boolean = false,
-        val message: String = ""
+        val error: String?,
+        val result: String?
     )
 }
