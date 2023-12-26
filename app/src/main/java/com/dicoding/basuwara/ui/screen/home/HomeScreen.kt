@@ -1,6 +1,7 @@
 package com.dicoding.basuwara.ui.screen.home
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -107,7 +108,7 @@ fun HomeTopBar(
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.primary)){
         Icon(
-            painter = painterResource(id = drawable.baseline_notifications_none_24),
+            painter = painterResource(id = drawable.ic_logout),
             contentDescription = "Notification",
             modifier = Modifier
                 .padding(top = 32.dp, end = 24.dp)
@@ -171,6 +172,7 @@ fun HomeBody(
                 progressBackgroundColor = Color.LightGray,
                 progressIndicatorColor = Color.Gray,
                 completedColor = Color.Green,
+                isClickable = true,
                 onClick = { onCourseChosen("jawa") }
             )
             ProgressCard(
@@ -180,6 +182,7 @@ fun HomeBody(
                 progressBackgroundColor = Color.LightGray,
                 progressIndicatorColor = Color.Gray,
                 completedColor = Color.Green,
+                isClickable = false,
                 onClick = { onCourseChosen("sunda") }
             )
             ProgressCard(
@@ -189,6 +192,7 @@ fun HomeBody(
                 progressBackgroundColor = Color.LightGray,
                 progressIndicatorColor = Color.Gray,
                 completedColor = Color.Green,
+                isClickable = false,
                 onClick = { onCourseChosen("bali") }
             )
         }
@@ -206,16 +210,19 @@ fun HomeBody(
             CourseCard(
                 title = "Belajar Aksara Jawa",
                 id = drawable.aksara_jawa,
+                isClickable = true,
                 onClick = { onCourseChosen("jawa") }
             )
             CourseCard(
                 title = "Belajar Aksara Sunda",
                 id = drawable.aksara_sunda,
+                isClickable = false,
                 onClick = { onCourseChosen("sunda") }
             )
             CourseCard(
                 title = "Belajar Aksara Bali",
                 id = drawable.aksara_bali,
+                isClickable = false,
                 onClick = { onCourseChosen("bali") }
             )
         }
@@ -230,15 +237,23 @@ fun ProgressCard(
     progressBackgroundColor: Color,
     progressIndicatorColor: Color,
     completedColor: Color,
+    isClickable: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     Card(
         modifier = modifier
             .padding(8.dp)
             .height(180.dp)
             .width(100.dp)
-            .clickable { onClick() }
+            .clickable {
+                if (isClickable) {
+                    onClick()
+                } else {
+                    Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show()
+                }
+            }
     ) {
         AnimatedCircularProgressIndicator(
             currentValue = currentValue,
@@ -270,14 +285,22 @@ fun ProgressCard(
 fun CourseCard(
     title: String,
     @DrawableRes id: Int,
+    isClickable: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     Card(
         modifier = modifier
             .width(180.dp)
             .height(100.dp)
-            .clickable { onClick() }
+            .clickable {
+                if (isClickable) {
+                    onClick()
+                } else {
+                    Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show()
+                }
+            }
             .padding(8.dp)
     ) {
         Row {
