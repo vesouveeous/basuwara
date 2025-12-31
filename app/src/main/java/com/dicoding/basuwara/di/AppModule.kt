@@ -5,6 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.dicoding.basuwara.data.preferences.UserPreference
 import com.dicoding.basuwara.data.preferences.dataStore
 import com.dicoding.basuwara.data.repository.AuthRepository
+import com.dicoding.basuwara.util.AksaraClassifier
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -44,4 +45,8 @@ object AppModule {
     @Provides
     @Singleton
     fun providePreference(@ApplicationContext context: Context) = UserPreference.getInstance(context.dataStore)
+
+    @Provides
+    @Singleton
+    fun provideAksaraClassifier(@ApplicationContext context: Context) = AksaraClassifier(context)
 }

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Quiz
@@ -27,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -43,7 +43,7 @@ import com.dicoding.basuwara.ui.navigation.Screen
 import com.dicoding.basuwara.ui.screen.onboard.Onboarding
 import com.dicoding.basuwara.ui.screen.register.Register
 import com.dicoding.basuwara.ui.screen.home.HomeScreen
-import com.dicoding.basuwara.ui.screen.image.CameraContent
+import com.dicoding.basuwara.ui.screen.camera.CameraContent
 import com.dicoding.basuwara.ui.screen.profile.ProfileScreen
 import com.dicoding.basuwara.ui.screen.quiz.ChooseQuizScreen
 import com.dicoding.basuwara.ui.screen.quiz.QuizResultScreen
@@ -76,7 +76,7 @@ class MainActivity : ComponentActivity() {
                         topBar = { if (isShowTopBar) TopBar(title = getTopBarTitle(currentRoute!!)) },
                         bottomBar = { if (isShowBottomBar) BottomBar(navController = navController) },
                         floatingActionButton = {
-                            if (currentRoute == Screen.Homepage.route) MyFab(navController = navController)
+                            if (currentRoute == Screen.Homepage.route) MyFab(navController = navController, modifier = Modifier.testTag("fab"))
                         }
                     ) { innerPadding ->
                         NavHost(
@@ -261,11 +261,11 @@ fun BottomBar(
                 icon = Icons.Default.Quiz,
                 screen = Screen.ChooseQuiz
             ),
-            NavigationItem(
-                title = "Profile",
-                icon = Icons.Default.AccountCircle,
-                screen = Screen.Profile
-            )
+//            NavigationItem(
+//                title = "Profile",
+//                icon = Icons.Default.AccountCircle,
+//                screen = Screen.Profile
+//            )
         )
 
         navigationItems.map {
@@ -293,13 +293,16 @@ fun BottomBar(
 
 @Composable
 fun MyFab(
-    navController: NavHostController
+    navController: NavHostController,
+    modifier: Modifier = Modifier
 ) {
     FloatingActionButton(onClick = {
         navController.navigate(Screen.Camera.route) {
             launchSingleTop = true
         }
-    }) {
+    },
+        modifier = modifier
+    ) {
         Icon(imageVector = Icons.Default.CameraAlt, contentDescription = "camera")
     }
 }

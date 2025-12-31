@@ -1,5 +1,4 @@
 package com.dicoding.basuwara.ui.screen.home
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -27,17 +26,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImagePainter
@@ -45,6 +44,8 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.dicoding.basuwara.R.*
 import com.dicoding.basuwara.ui.components.AnimatedCircularProgressIndicator
+import com.dicoding.basuwara.ui.components.home.CourseCard
+import com.dicoding.basuwara.ui.components.home.ProgressCard
 
 @Composable
 fun HomeScreen(
@@ -106,9 +107,17 @@ fun HomeTopBar(
         )
     Box(modifier = modifier
         .fillMaxWidth()
-        .background(MaterialTheme.colorScheme.primary)){
+        .background(
+            brush = Brush.linearGradient(
+                colors = listOf(Color(0xFF484BF1), Color(0xFF673AB7)),
+                start = Offset(0f, 0f),
+                end = Offset.Infinite
+            )
+        )
+    ){
         Icon(
             painter = painterResource(id = drawable.ic_logout),
+            tint = Color.White,
             contentDescription = "Notification",
             modifier = Modifier
                 .padding(top = 32.dp, end = 24.dp)
@@ -173,7 +182,8 @@ fun HomeBody(
                 progressIndicatorColor = Color.Gray,
                 completedColor = Color.Green,
                 isClickable = true,
-                onClick = { onCourseChosen("jawa") }
+                onClick = { onCourseChosen("jawa") },
+                modifier = Modifier.testTag("progress_jawa")
             )
             ProgressCard(
                 title = "Belajar Aksara Sunda",
@@ -182,8 +192,9 @@ fun HomeBody(
                 progressBackgroundColor = Color.LightGray,
                 progressIndicatorColor = Color.Gray,
                 completedColor = Color.Green,
-                isClickable = false,
-                onClick = { onCourseChosen("sunda") }
+                isClickable = true,
+                onClick = { onCourseChosen("sunda") },
+                modifier = Modifier.testTag("progress_sunda")
             )
             ProgressCard(
                 title = "Belajar Aksara Bali",
@@ -192,8 +203,9 @@ fun HomeBody(
                 progressBackgroundColor = Color.LightGray,
                 progressIndicatorColor = Color.Gray,
                 completedColor = Color.Green,
-                isClickable = false,
-                onClick = { onCourseChosen("bali") }
+                isClickable = true,
+                onClick = { onCourseChosen("bali") },
+                modifier = Modifier.testTag("progress_bali")
             )
         }
         Text(
@@ -211,114 +223,24 @@ fun HomeBody(
                 title = "Belajar Aksara Jawa",
                 id = drawable.aksara_jawa,
                 isClickable = true,
-                onClick = { onCourseChosen("jawa") }
+                onClick = { onCourseChosen("jawa") },
+                modifier = Modifier.testTag("course_jawa")
             )
             CourseCard(
                 title = "Belajar Aksara Sunda",
                 id = drawable.aksara_sunda,
-                isClickable = false,
-                onClick = { onCourseChosen("sunda") }
+                isClickable = true,
+                onClick = { onCourseChosen("sunda") },
+                modifier = Modifier.testTag("course_sunda")
+
             )
             CourseCard(
                 title = "Belajar Aksara Bali",
                 id = drawable.aksara_bali,
-                isClickable = false,
-                onClick = { onCourseChosen("bali") }
-            )
-        }
-    }
-}
+                isClickable = true,
+                onClick = { onCourseChosen("bali") },
+                modifier = Modifier.testTag("course_bali")
 
-@Composable
-fun ProgressCard(
-    title: String,
-    currentValue: Int,
-    maxValue: Int,
-    progressBackgroundColor: Color,
-    progressIndicatorColor: Color,
-    completedColor: Color,
-    isClickable: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val context = LocalContext.current
-    Card(
-        modifier = modifier
-            .padding(8.dp)
-            .height(180.dp)
-            .width(100.dp)
-            .clickable {
-                if (isClickable) {
-                    onClick()
-                } else {
-                    Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show()
-                }
-            }
-    ) {
-        AnimatedCircularProgressIndicator(
-            currentValue = currentValue,
-            maxValue = maxValue,
-            progressBackgroundColor = progressBackgroundColor,
-            progressIndicatorColor = progressIndicatorColor,
-            completedColor = completedColor,
-            modifier = modifier
-                .padding(8.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = modifier.fillMaxWidth()
-        )
-        Text(
-            text = "$maxValue materi",
-            style = MaterialTheme.typography.labelSmall,
-            textAlign = TextAlign.Start,
-            modifier = modifier.padding(start = 8.dp, top = 12.dp)
-        )
-    }
-}
-
-@Composable
-fun CourseCard(
-    title: String,
-    @DrawableRes id: Int,
-    isClickable: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val context = LocalContext.current
-    Card(
-        modifier = modifier
-            .width(180.dp)
-            .height(100.dp)
-            .clickable {
-                if (isClickable) {
-                    onClick()
-                } else {
-                    Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .padding(8.dp)
-    ) {
-        Row {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-                modifier = modifier
-                    .padding(8.dp)
-                    .width(80.dp)
-                    .align(Alignment.CenterVertically)
-            )
-            Image(
-                painter = painterResource(id = id),
-                contentDescription = "",
-                modifier = modifier
-                    .padding(8.dp)
-                    .fillMaxSize()
             )
         }
     }

@@ -37,4 +37,35 @@ fun StudyScreen(
             )
         }
     }
+    if (courseType == "sunda") {
+        Column(
+            modifier = Modifier.fillMaxSize().verticalScroll(scrollState)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.sunda_course),
+                contentDescription = "materi aksara jawa",
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth().fillMaxHeight()
+            )
+        }
+    }
+
+    if (courseType == "bali"){
+        Column(
+            modifier = Modifier.fillMaxSize().verticalScroll(scrollState)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.bali_course1),
+                contentDescription = "materi aksara bali",
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth().fillMaxHeight()
+            )
+            Image(
+                painter = painterResource(id = R.drawable.bali_course2),
+                contentDescription = "materi aksara bali",
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth().fillMaxHeight()
+            )
+        }
+    }
 }

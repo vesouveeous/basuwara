@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "616338032484",
-    "firebase_url": "https://basuwara-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "basuwara",
-    "storage_bucket": "basuwara.appspot.com"
+    "project_number": "158315154950",
+    "firebase_url": "https://basuwara-e94d2-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "basuwara-e94d2",
+    "storage_bucket": "basuwara-e94d2.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:616338032484:android:8c347e68aea988be5a5c71",
+        "mobilesdk_app_id": "1:158315154950:android:26d9d99a636c0fd60b3d87",
         "android_client_info": {
           "package_name": "com.dicoding.basuwara"
         }
       },
       "oauth_client": [
         {
-          "client_id": "616338032484-6ms59j7upadiofdso04f7fnubt1gmuq4.apps.googleusercontent.com",
+          "client_id": "158315154950-hmvec2bjg12373pummhd7kkg138cpj3i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.dicoding.basuwara",
-            "certificate_hash": "da0f91fb9c3658e2f91daafbee3ffedeb92d5898"
+            "certificate_hash": "da4738ba7f046eeb54d21d80cc882f9b65899874"
           }
         },
         {
-          "client_id": "616338032484-80jiv5knpm9bujb3iingjoishp1ovj3n.apps.googleusercontent.com",
+          "client_id": "158315154950-jmbfkqvkurq6t8pgmas3uo59vf54bg3u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDKntYl_Z0Eveg-JoZ0V2Vo6Qj_mXr5BtU"
+          "current_key": "AIzaSyDLR78vAurY06y6Jp0ODVGDkptRwt0usSY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "616338032484-80jiv5knpm9bujb3iingjoishp1ovj3n.apps.googleusercontent.com",
+              "client_id": "158315154950-jmbfkqvkurq6t8pgmas3uo59vf54bg3u.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

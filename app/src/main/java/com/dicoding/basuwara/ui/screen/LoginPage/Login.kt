@@ -11,13 +11,18 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -27,9 +32,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -44,10 +52,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.dicoding.basuwara.R
+import com.dicoding.basuwara.ui.components.login.GradientButton
+import com.dicoding.basuwara.ui.components.login.OutlinedEmailTextField
+import com.dicoding.basuwara.ui.components.login.OutlinedPasswordTextField
 import com.dicoding.basuwara.ui.screen.LoginPage.LoginViewModel
 import com.dicoding.basuwara.ui.theme.Visibility
 import com.dicoding.basuwara.ui.theme.VisibilityOff
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -60,12 +72,22 @@ fun Login(
     onCreateAccountClick: () -> Unit,
     onLoginClick: () -> Unit
 ) {
+    val clipboardManager = LocalClipboardManager.current
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
     val state = viewModel.loginState.collectAsState(initial = null)
+    var isShowSnackBar by remember { mutableStateOf(false) }
+    var snackBarMessage by remember { mutableStateOf("") }
+
+    fun showSnackBar(
+        text: String
+    ) {
+        isShowSnackBar = true
+        snackBarMessage = text
+    }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,7 +130,7 @@ fun Login(
                 Spacer(modifier = Modifier.height(50.dp))
 
                 //.........................Text: title
-                androidx.compose.material3.Text(
+                Text(
                     text = "Sign In",
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -118,12 +140,12 @@ fun Login(
                     color = MaterialTheme.colorScheme.primary,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                SimpleOutlinedTextFieldSample(email){
+                OutlinedEmailTextField(email){
                     email = it
                 }
 
                 Spacer(modifier = Modifier.padding(3.dp))
-                SimpleOutlinedPasswordTextField(password) {
+                OutlinedPasswordTextField(password) {
                     password = it
                 }
 
@@ -138,8 +160,16 @@ fun Login(
                     cornerRadius = cornerRadius,
                     nameButton = "Login",
                     onClick = {
-                        scope.launch {
-                            viewModel.loginUser(email, password)
+                        if (email.isEmpty() || password.isEmpty()) {
+                            showSnackBar("Error: Empty Input")
+                            CoroutineScope(Dispatchers.Default).launch {
+                                delay(3000)
+                                isShowSnackBar = false
+                            }
+                        } else {
+                            scope.launch {
+                                viewModel.loginUser(email, password)
+                            }
                         }
                     }
                 )
@@ -156,20 +186,18 @@ fun Login(
                 LaunchedEffect(key1 = state.value?.isSuccess) {
                     if (!state.value?.isSuccess.isNullOrEmpty()) {
                         viewModel.saveSession(state.value?.isSuccess!!)
-                        withContext(Dispatchers.Default) {
-                            delay(1000)
-
-                            withContext(Dispatchers.Main) {
-                                onLoginClick()
-                            }
-                        }
+                        delay(1000)
+                        onLoginClick()
                     }
                 }
                 LaunchedEffect(key1 = state.value?.isError) {
                     if (!state.value?.isError.isNullOrEmpty()){
-                        Toast.makeText(context, state.value?.isError, Toast.LENGTH_SHORT).show()
+                        showSnackBar(state.value?.isError!!)
+                        delay(3000)
+                        isShowSnackBar = false
                     }
                 }
+
             }
 
             if (state.value?.isLoading == true) {
@@ -180,141 +208,39 @@ fun Login(
                 )
             }
         }
-
-    }
-
-
-}
-
-
-//...........................................................................
-@Composable
-private fun GradientButton(
-    gradientColors: List<Color>,
-    cornerRadius: Dp,
-    nameButton: String,
-    onClick: () -> Unit
-) {
-
-    androidx.compose.material3.Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 32.dp, end = 32.dp),
-        onClick = {
-            onClick()
-        },
-
-        contentPadding = PaddingValues(),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent
-        ),
-        shape = RoundedCornerShape(cornerRadius)
-    ) {
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
-
+        if (isShowSnackBar) {
+            Snackbar(
+                action = {
+                    Icon(
+                        Icons.Default.CopyAll,
+                        modifier = Modifier.clickable {
+                            clipboardManager.setText(
+                                AnnotatedString(snackBarMessage)
+                            )
+                            Toast
+                                .makeText(context, "Copied!", Toast.LENGTH_SHORT)
+                                .show()
+                        },
+                        contentDescription = "TODO()",
+                        tint = Color.Black,
                     )
-
-                /*.background(
-                    brush = Brush.linearGradient(colors = gradientColors),
-                    shape = RoundedCornerShape(cornerRadius)
-                )*/
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            androidx.compose.material3.Text(
-                text = nameButton,
-                fontSize = 20.sp,
-                color = Color.White
-            )
+                },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .testTag("empty_input_error")
+                    .align(Alignment.BottomCenter)
+            ) {
+                Text(
+                    text = snackBarMessage,
+                    color = Color.White,
+                )
+            }
         }
     }
+
+
+
+
 }
 
 
-//email id
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun SimpleOutlinedTextFieldSample(
-    text: String,
-    onChange: (String) -> Unit
-) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-
-    OutlinedTextField(
-        value = text,
-        onValueChange = { onChange(it) },
-        label = {
-            Text("Name or Email Address",
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelMedium,
-            ) },
-        placeholder = { Text(text = "Name or Email Address") },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Next,
-            keyboardType = KeyboardType.Email
-        ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.primary),
-        singleLine = true,
-        modifier = Modifier.fillMaxWidth(0.8f),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                keyboardController?.hide()
-                // do something here
-            }
-        )
-
-    )
-}
-
-//password
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun SimpleOutlinedPasswordTextField(
-    password: String,
-    onChange: (String) -> Unit
-) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    var passwordHidden by rememberSaveable { mutableStateOf(true) }
-    OutlinedTextField(
-        value = password,
-        onValueChange = { onChange(it) },
-        label = {
-            Text("Enter Password",
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelMedium,
-            ) },
-        visualTransformation =
-        if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
-        //  keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done,
-            keyboardType = KeyboardType.Password
-        ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.primary),
-        trailingIcon = {
-            IconButton(onClick = { passwordHidden = !passwordHidden }) {
-                val visibilityIcon =
-                    if (passwordHidden) Visibility else VisibilityOff
-                // Please provide localized description for accessibility services
-                val description = if (passwordHidden) "Show password" else "Hide password"
-                Icon(imageVector = visibilityIcon, contentDescription = description)
-            }
-        },
-        modifier = Modifier.fillMaxWidth(0.8f),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                keyboardController?.hide()
-                // do something here
-            }
-        )
-    )
-}
